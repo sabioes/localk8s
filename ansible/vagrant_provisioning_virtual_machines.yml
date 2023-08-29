@@ -1,0 +1,10 @@
+---
+- name: Provision and Configure Vagrant - Local VM with VirtualBox
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Run Vagrant
+      command: vagrant up
+      args:
+        chdir: /path/to/folder/containing/Vagrantfile

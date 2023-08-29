@@ -1,0 +1,9 @@
+---
+- name: Upgrade installed packages
+  win_chocolatey:
+    name: all
+    state: "{{ chocolatey_version }}"
+- name: Install VirtualBox using Chocolatey
+  win_chocolatey:
+    name: virtualbox
+    state: "{{ virtualbox_version }}"

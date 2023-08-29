@@ -1,0 +1,9 @@
+---
+#Remote windows installation
+- name: Install VirtualBox on Windows
+  hosts: win
+  gather_facts: false
+
+  roles:
+    - windows_virtualbox
+    #- vagrant

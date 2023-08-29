@@ -1,0 +1,42 @@
+#!/bin/bash
+
+source environment_variables.sh
+
+COMMAND=${1}
+
+function usage {
+    echo "
+proviclus cli 1.0.0
+
+COMMANDS:
+
+Run a Hello World container with ansible:
+
+    proviclus.sh helloworld
+
+    "
+}
+
+if [[ -z ${COMMAND} ]]; then
+    usage
+    exit 1
+fi
+
+case ${COMMAND} in 
+
+    startcontainer)
+        echo "starting docker container"
+        #docker run --rm -it localk8s:latest
+        #docker run --network bridge -v "${PWD}":/work:ro -v "${PWD}"/ansible/roles:/root/.ansible/roles -v ~/.ssh:/root/.ssh:ro --rm localk8s:latest ansible-playbook ansible/install_virtualbox.yml -i ansible/inventory/inventory.yml 
+        docker run --network bridge -v "${PWD}":/work -v "${PWD}"/ansible/roles:/root/.ansible/roles -v ~/.ssh:/root/.ssh:rw --rm -it localk8s:latest
+    ;;
+
+    anhelp)
+        echo "docker container starting to get ansible help..."
+        docker run --rm localk8s:latest ansible-playbook -h
+    ;;
+
+    *)
+        echo "argument not found."
+    ;;    
+esac
