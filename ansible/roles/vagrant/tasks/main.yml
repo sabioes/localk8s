@@ -1,5 +1,15 @@
 ---
+- name: Install vagrant
+  win_chocolatey:
+    name: vagrant
+    version: "{{ vagrant_version }}"
+    state: present
+- name: Copy vagrant file to windows remote
+  ansible.windows.win_template:
+    src: templates/vagrantfile/vagrantfile.conf.j2
+    dest: "{{ windows_userprofile_dir_vagrantfile }}\\vagrantfile"
 - name: Run Vagrant
-  command: vagrant up
-  args:
-    chdir: /path/to/folder/containing/Vagrantfile
+  ansible.windows.win_powershell:
+    script: vagrant up
+    parameters:
+      Path: "{{ windows_userprofile_dir_vagrantfile }}"

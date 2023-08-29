@@ -1,0 +1,3 @@
+chocolatey_version: latest
+virtualbox_version: present
+python_version: 3.11.5
