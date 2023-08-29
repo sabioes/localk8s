@@ -1,0 +1,5 @@
+---
+- name: Run Vagrant
+  command: vagrant up
+  args:
+    chdir: /path/to/folder/containing/Vagrantfile
