@@ -5,11 +5,13 @@
   gather_facts: false
 
   roles:
-  #  - windows
+    - windows
     - vagrant
 
 - name: Install Kubernetes Core
   hosts: k8scluster
   become: true
   roles:
+    - ubuntu_update
     - docker
+    - kubernetes_core
