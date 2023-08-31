@@ -1,17 +1,53 @@
 ---
+- include_vars: ../vars/main.yml
+- name: Download the public signing key for the CRI-O to a specific keyring file of 
+  apt_key:
+    url: https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:{{ CRIO_VERSION }}/{{ OS }}/Release.key
+    keyring: /etc/apt/keyrings/crio-apt-keyring.gpg
 - name: Download the public signing key for the kubernetes package repository to a specific keyring file
-  ansible.builtin.apt_key:
-    id: 9FED2BCBDCD29CDF762678CBAED4B06F473041FA
+  apt_key:
     url: https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key
     keyring: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+- name: Add CRI-O basic repository for xUbuntu_22.04 into sources list
+  apt_repository:
+    filename: /etc/apt/sources.list.d/crio.list
+    repo: deb [signed-by=/etc/apt/keyrings/crio-apt-keyring.gpg] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ OS }}/ /
+- name: Add CRI-O repository for CRI-O into sources list
+  apt_repository:
+    filename: /etc/apt/sources.list.d/crio.list
+    repo: deb [signed-by=/etc/apt/keyrings/crio-apt-keyring.gpg] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ CRIO_VERSION }}/{{ OS }}/ /
 - name: Add kubernetes repository into sources list
-  ansible.builtin.apt_repository:
+  apt_repository:
     filename: /etc/apt/sources.list.d/kubernetes.list
     repo: deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /
 - name: Update apt repo and cache on all Debian/Ubuntu boxes
   apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+- name: Install CRI-O and CRI-O-RUNC
+  apt:
+    name:
+      - cri-o 
+      - cri-o-runc
+- name: Start the CRI-O Service
+  service:
+    name: crio
+    state: started
+    enabled: true
+- name: Install the CNI Plugin for CRI-O
+  apt:
+    name: containernetworking-plugins
+- name: Change configuration of CRI-O for CNI
+  template:
+    src: templates/CRIO/crio.conf.j2
+    dest: /etc/crio/crio.conf
+- name: Restart CRI-O Service
+  service:
+    name: crio
+    state: restarted 
 - name: Install Kubernetes kubelet kubeadmn kubectl
   apt: 
-    name: kubelet kubeadm kubectl
+    name: 
+      - kubelet 
+      - kubeadm 
+      - kubectl
     allow_change_held_packages: true
     update_cache: true
