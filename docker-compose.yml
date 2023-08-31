@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+    run:
+        network_mode: bridge
+        volumes:
+            - '${PWD}:/work'
+            - '${PWD}/ansible/roles:/root/.ansible/roles'
+            - '~/.ssh:/root/.ssh:rw'
+        image: localk8s:latest
+        extra_hosts:
+          - "host.docker.internal:host-gateway"
