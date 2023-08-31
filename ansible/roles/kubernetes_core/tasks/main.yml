@@ -1,0 +1,17 @@
+---
+- name: Download the public signing key for the kubernetes package repository to a specific keyring file
+  ansible.builtin.apt_key:
+    id: 9FED2BCBDCD29CDF762678CBAED4B06F473041FA
+    url: https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key
+    keyring: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+- name: Add kubernetes repository into sources list
+  ansible.builtin.apt_repository:
+    filename: /etc/apt/sources.list.d/kubernetes.list
+    repo: deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /
+- name: Update apt repo and cache on all Debian/Ubuntu boxes
+  apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+- name: Install Kubernetes kubelet kubeadmn kubectl
+  apt: 
+    name: kubelet kubeadm kubectl
+    allow_change_held_packages: true
+    update_cache: true
