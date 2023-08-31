@@ -24,7 +24,7 @@
     state: present
     update_cache: yes
   notify:
-    - docker status
+    - docker info
 - name: Add vagrant user to docker group
   user:
     name: vagrant
