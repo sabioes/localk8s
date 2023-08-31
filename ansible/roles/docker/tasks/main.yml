@@ -23,8 +23,6 @@
     name: "{{ packages_dependecies }}"
     state: present
     update_cache: yes
-  notify:
-    - docker info
 - name: Add vagrant user to docker group
   user:
     name: vagrant
