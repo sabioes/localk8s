@@ -1,0 +1,15 @@
+---
+#Remote windows installation
+- name: Install VirtualBox on Windows
+  hosts: win
+  gather_facts: false
+
+  roles:
+  #  - windows
+    - vagrant
+
+- name: Install Kubernetes Core
+  hosts: k8scluster
+  become: true
+  roles:
+    - docker
