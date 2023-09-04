@@ -97,7 +97,6 @@
 # and options for how to set up and manage the OCI runtime.
 [crio.runtime]
 conmon_cgroup = "pod"
-cgroup_manager = "cgroupfs"
 
 # A list of ulimits to be set in containers by default, specified as
 # "<ulimit name>=<soft limit>:<hard limit>", for example:
@@ -168,7 +167,7 @@ cgroup_manager = "cgroupfs"
 # rdt_config_file = ""
 
 # Cgroup management implementation used for the runtime.
-# cgroup_manager = "systemd"
+cgroup_manager = "systemd"
 
 # Specify whether the image pull must be performed in a separate cgroup.
 # separate_pull_cgroup = ""
