@@ -12,5 +12,5 @@
   hosts: k8scluster
   become: true
   roles:
-#    - ubuntu_update
+    - ubuntu_update
     - kubernetes_core
