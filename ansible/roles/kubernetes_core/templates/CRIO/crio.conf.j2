@@ -96,6 +96,8 @@
 # The crio.runtime table contains settings pertaining to the OCI runtime used
 # and options for how to set up and manage the OCI runtime.
 [crio.runtime]
+conmon_cgroup = "pod"
+cgroup_manager = "cgroupfs"
 
 # A list of ulimits to be set in containers by default, specified as
 # "<ulimit name>=<soft limit>:<hard limit>", for example:
@@ -442,6 +444,8 @@
 # this file. Otherwise, leave insecure_registries and registries commented out to
 # use the system's defaults from /etc/containers/registries.conf.
 [crio.image]
+pause_image="registry.k8s.io/pause:3.9"
+
 
 # Default transport for pulling images from a remote container storage.
 # default_transport = "docker://"
