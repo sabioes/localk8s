@@ -1,0 +1,14 @@
+---
+#- include_vars: ../vars/main.yml
+- name: Copy the init.yaml template to Control Plane
+  template:
+    src: templates/init.yaml.j2
+    dest: ~/init.yaml
+    owner: vagrant
+- name: Init the Control Plane
+  shell: sudo kubeadm init --config ~/init.yaml --upload-certs
+  register: kubeadm_init_result
+
+- name: Print Control Plan Init Log  
+  debug: 
+    var: kubeadm_init_result
