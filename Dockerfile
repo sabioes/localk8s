@@ -11,7 +11,7 @@ RUN pip install pip --upgrade
 RUN pip install ansible-core==${ANSIBLE_VERSION}
 RUN apt-get update -y && DEBIAN_FRONTEND=nointeractive apt-get install -y --no-install-recommends sshpass
 #Install Ansible dependencies
-RUN ansible-galaxy collection install chocolatey.chocolatey ansible.windows  
+RUN ansible-galaxy collection install chocolatey.chocolatey ansible.windows community.general 
 
 WORKDIR /work
 
