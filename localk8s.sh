@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source environment_variables.sh
+#source environment_variables.sh
 
 COMMAND=${1}
 
