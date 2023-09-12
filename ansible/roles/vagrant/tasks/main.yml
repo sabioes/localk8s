@@ -12,8 +12,3 @@
   ansible.windows.win_powershell:
     script: vagrant up
     chdir: "{{ windows_userprofile_dir_vagrantfile }}"
-#- win_command: powershell.exe -
-#  args: 
-#    stdin: vagrant up
-#  become: true
-#  become_user: Administrator
