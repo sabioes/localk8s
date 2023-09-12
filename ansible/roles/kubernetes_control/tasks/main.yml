@@ -1,14 +1,41 @@
 ---
-#- include_vars: ../vars/main.yml
 - name: Copy the init.yaml template to Control Plane
   template:
     src: templates/init.yaml.j2
     dest: ~/init.yaml
     owner: vagrant
-- name: Init the Control Plane
-  shell: sudo kubeadm init --config ~/init.yaml --upload-certs
-  register: kubeadm_init_result
-
+#- name: Init the Control Plane
+#  #shell: sudo kubeadm init --config ~/init.yaml --upload-certs
+#  shell: sudo kubeadm init --control-plane-endpoint=k8s-master
+#  register: kubeadm_init_result
+- name: read access to /etc/kubernetes/admin.conf file
+  become: true
+  file:
+    path: /etc/kubernetes/admin.conf
+    owner: vagrant
+    mode: '0644'
+- name: Get join token from Control Plane
+  shell: sudo kubeadm token create --print-join-command
+  register: reg_kubeadm_token
+- name: Print Control Token   
+  debug: 
+    var: reg_kubeadm_token.stdout
+- name: Set Control Plan Join Token variable
+  set_fact:
+    var_kubeadm_token: "{{ reg_kubeadm_token.stdout }}"
+- name: Add variable to host dummy variables
+  add_host:
+    name: "temp_host"
+    shared_kubeadm_token: "{{ var_kubeadm_token }}"
 - name: Print Control Plan Init Log  
   debug: 
     var: kubeadm_init_result
+- name: Create ~/.kube directory
+  file:
+    path: ~/.kube
+    state: directory
+- name: Copy the kube config in ~/.kube/config
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: ~/.kube/config
+    remote_src: true
