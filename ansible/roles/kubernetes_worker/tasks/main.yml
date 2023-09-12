@@ -1,0 +1,7 @@
+---
+- name: Print Control Plan Join Token  
+  debug: 
+    var: hostvars['temp_host']['shared_kubeadm_token']
+- name: Adding the workers to the cluster
+  shell: "sudo {{ hostvars['temp_host']['shared_kubeadm_token'] }}"
+  register: kubeadm_joining_result
