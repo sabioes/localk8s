@@ -1,6 +1,6 @@
 ---
 - name: Copy the config file to "host" windows machine
   win_copy:
-    src: work/config_files/.kube/config
+    src: config_files/.kube/config
     dest: C:\path\to\destination\file  # Path to the file on the destination host
     delegate_to: destination_host 

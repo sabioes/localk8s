@@ -42,4 +42,4 @@
 - name: Fetch the config file to localhost
   fetch:
     src: ~/.kube/config
-    dest: work/config_files/.kube/config
+    dest: config_files/.kube/config
