@@ -7,10 +7,27 @@
   roles:
     - windows
     - vagrant
-
+# Kubernetes requirements and core installation
 - name: Install Kubernetes Core
   hosts: k8scluster
   become: true
   roles:
     - ubuntu_update
     - kubernetes_core
+# Kubernetes Control Plane initialization
+- name: Init K8s Control Plane
+  hosts: k8s-master
+  roles:
+    - kubernetes_control
+# Kubernetes Worker Nodes initialization
+- name: Init K8s Worker Nodes
+  hosts:
+    - node-1
+    - node-2
+  roles:
+    - kubernetes_worker
+# Download and configure kubectl of host machine
+- name: Configure k8s connection locally 
+  hosts: windows
+  roles:
+    -  host_config
