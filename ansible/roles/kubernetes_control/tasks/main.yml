@@ -4,10 +4,10 @@
     src: templates/init.yaml.j2
     dest: ~/init.yaml
     owner: vagrant
-#- name: Init the Control Plane
+- name: Init the Control Plane
 #  #shell: sudo kubeadm init --config ~/init.yaml --upload-certs
-#  shell: sudo kubeadm init --control-plane-endpoint=k8s-master
-#  register: kubeadm_init_result
+  shell: sudo kubeadm init --control-plane-endpoint=k8s-master
+  register: kubeadm_init_result
 - name: read access to /etc/kubernetes/admin.conf file
   become: true
   file:
@@ -39,3 +39,7 @@
     src: /etc/kubernetes/admin.conf
     dest: ~/.kube/config
     remote_src: true
+- name: Fetch the config file to localhost
+  fetch:
+    src: ~/.kube/config
+    dest: work/config_files/.kube/config
